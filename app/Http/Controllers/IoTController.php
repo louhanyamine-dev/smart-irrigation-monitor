@@ -23,6 +23,7 @@ class IoTController extends Controller
             'w6'        => ['nullable', 'numeric', 'min:0', 'max:199'],
             'device_id' => ['nullable', 'string',  'max:64'],
             'rssi'      => ['nullable', 'integer'],
+            'timestamp' => ['nullable', 'date'],        // ← زيد
         ]);
 
         $row = MesuresWatermark::create([
@@ -32,8 +33,8 @@ class IoTController extends Controller
             'watermark4'  => (float) ($validated['w4'] ?? 0),
             'watermark5'  => (float) ($validated['w5'] ?? 0),
             'watermark6'  => (float) ($validated['w6'] ?? 0),
-            'device_id'   => $validated['device_id'] ?? 'esp32-watermark',
-            'recorded_at' => now(),
+            'device_id'   => $validated['device_id']  ?? 'esp32-watermark',
+            'recorded_at' => $validated['timestamp']  ?? now(), // ← بدل
         ]);
 
         return response()->json(['success' => true, 'data' => $row], 201);
@@ -74,6 +75,7 @@ class IoTController extends Controller
             'p'         => ['required', 'numeric', 'min:0',   'max:20'],
             'device_id' => ['nullable', 'string',  'max:64'],
             'rssi'      => ['nullable', 'integer'],
+            'timestamp' => ['nullable', 'date'],        // ← زيد
         ]);
 
         $row = MesuresElectrique::create([
@@ -83,9 +85,9 @@ class IoTController extends Controller
             'tension1'    => (float) $validated['v1'],
             'tension2'    => (float) $validated['v2'],
             'pression'    => (float) $validated['p'],
-            'device_id'   => $validated['device_id'] ?? 'esp32-electrique',
-            'rssi'        => $validated['rssi'] ?? null,
-            'recorded_at' => now(),
+            'device_id'   => $validated['device_id']  ?? 'esp32-electrique',
+            'rssi'        => $validated['rssi']        ?? null,
+            'recorded_at' => $validated['timestamp']   ?? now(), // ← بدل
         ]);
 
         return response()->json(['success' => true, 'data' => $row], 201);
